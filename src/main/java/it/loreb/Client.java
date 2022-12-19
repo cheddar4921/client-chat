@@ -103,6 +103,7 @@ public class Client implements Runnable
             catch (IOException ioe)
             {
                 logger.severe("Exception in the stream. " + ioe.getMessage());
+                running = false;
             }
         }
         logger.info("Shutting down.");
