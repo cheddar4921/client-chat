@@ -34,6 +34,13 @@ public class Client implements Runnable
     private static SimpleFormatter  sf;
     private static File             logFile;
 
+    /**
+     * The Client class is the main operator of the client-side. It manages sending and recieving messages from the server.
+     * @param ip The IP of the server. Default is "localhost".
+     * @param port The port of the server. This will be validated, if found to be an invalid value, then it will go to default. Default is 25575.
+     * @param debug Whether to run the client is debug or not. 
+     * @throws IOException Thrown when an error occurs in the creation of a log file.
+     */
     public Client(String ip, int port, boolean debug) throws IOException
     {
         //initializing logger
@@ -135,18 +142,6 @@ public class Client implements Runnable
             pendingName = m.getContents();
             logger.info("Storing pending name (" + this.pendingName + ") for later.");
             output.writeBytes(str + "\n");
-            break;
-            case LOG:
-            switch (m.getContents().toLowerCase())
-            {
-                case "all":
-                logger.setLevel(Level.ALL);
-                case "off":
-                logger.setLevel(Level.OFF);
-                break;
-                default:
-                throw new InvalidMessageException("Logger value is incorrect.");
-            }
             break;
             case DISCONNECT:
             logger.info("Sending disconnect request.");

@@ -22,6 +22,12 @@ public class ClientInput implements Runnable
     private static SimpleFormatter  sf;
     private static File             logFile;
 
+    /**
+     * The physical input of the client. This manages keyboard control and sends in strings to the client to be verified.
+     * @param parent The client reference.
+     * @param debug Whether to run the client is debug or not. 
+     * @throws IOException Thrown when an error occurs in the creation of a log file.
+     */
     public ClientInput(Client parent, boolean debug) throws IOException
     {
         //initializing logger
@@ -78,20 +84,11 @@ public class ClientInput implements Runnable
         }
     }
 
+    /**
+     * Method to update the running state of the input. Used from parent Client.
+     */
     public void kill() {
         running = false;
-    }
-
-    public void toggleLogging()
-    {
-        if (fh.getLevel() == Level.SEVERE)
-        {
-            fh.setLevel(Level.FINEST);
-        }
-        if (fh.getLevel() == Level.FINEST)
-        {
-            fh.setLevel(Level.SEVERE);
-        }
     }
         
 }
