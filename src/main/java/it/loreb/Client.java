@@ -34,7 +34,7 @@ public class Client implements Runnable
     private static SimpleFormatter  sf;
     private static File             logFile;
 
-    public Client(int port, boolean debug) throws IOException
+    public Client(String ip, int port, boolean debug) throws IOException
     {
         //initializing logger
         logger = Logger.getLogger(Client.class.getName());
@@ -58,8 +58,8 @@ public class Client implements Runnable
         logger.info("Hello world!");
         
         this.clientName = "Guest";
-        this.serverAddress = "localhost";
-        this.port = port;
+        this.serverAddress = ip;
+        this.port = validatePort(port);
         this.socket = new Socket(this.serverAddress, this.port);
         this.output = new DataOutputStream(socket.getOutputStream());
         this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -110,6 +110,7 @@ public class Client implements Runnable
             catch (IOException ioe)
             {
                 logger.severe("Exception in the stream. " + ioe.getMessage());
+                System.out.println("Getting disconnected from the server. Reason: Error in stream, server might have shut down.");
                 running = false;
             }
         }
@@ -154,6 +155,24 @@ public class Client implements Runnable
             default:
             output.writeBytes(str + "\n");
             break;
+        }
+    }
+
+    /**
+     * Validates the port number inserted when executing the program.
+     * @param port The port number to validate.
+     * @return Returns the port number if valid. If not valid, returns 25575 to use as default port
+     */
+    public int validatePort(int port)
+    {
+        if ((port > 0) && (port < 65536))
+        {
+            return port;
+        }
+        else
+        {
+            logger.warning("PORT NUMBER INVALID. Using 25575 instead.");
+            return 25575;
         }
     }
 }

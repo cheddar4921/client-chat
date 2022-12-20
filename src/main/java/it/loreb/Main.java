@@ -7,13 +7,18 @@ public class Main
 {
     public static void main( String[] args ) throws IOException
     {
+        String ip = "localhost";
         int port = 25575;
         boolean debug = false;
         if (args.length > 0)
         {
-            port = Integer.parseInt(args[0]);
+            ip = args[0];
         }
-        if (args.length == 2)
+        if (args.length > 1)
+        {
+            port = Integer.parseInt(args[1]);
+        }
+        if (args.length > 1)
         {
             if (args[1].equals("debug"))
             {
@@ -27,7 +32,7 @@ public class Main
             {
                 dir.mkdir();
             }
-            Client mainClient = new Client(port, debug);
+            Client mainClient = new Client(ip, port, debug);
             mainClient.run();
         }
         catch (IOException ioe)
