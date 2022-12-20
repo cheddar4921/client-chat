@@ -7,6 +7,19 @@ public class Main
 {
     public static void main( String[] args ) throws IOException
     {
+        int port = 25575;
+        boolean debug = false;
+        if (args.length > 0)
+        {
+            port = Integer.parseInt(args[0]);
+        }
+        if (args.length == 2)
+        {
+            if (args[1].equals("debug"))
+            {
+                debug = true;
+            }
+        }
         try
         {
             File dir = new File("logs");
@@ -14,7 +27,7 @@ public class Main
             {
                 dir.mkdir();
             }
-            Client mainClient = new Client(25575);
+            Client mainClient = new Client(port, debug);
             mainClient.run();
         }
         catch (IOException ioe)

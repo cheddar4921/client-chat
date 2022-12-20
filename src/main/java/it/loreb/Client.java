@@ -34,7 +34,7 @@ public class Client implements Runnable
     private static SimpleFormatter  sf;
     private static File             logFile;
 
-    public Client(int port) throws IOException
+    public Client(int port, boolean debug) throws IOException
     {
         //initializing logger
         logger = Logger.getLogger(Client.class.getName());
@@ -47,7 +47,14 @@ public class Client implements Runnable
         sf = new SimpleFormatter();
         fh.setFormatter(sf);
         logger.addHandler(fh);
-        logger.setLevel(Level.OFF);
+        if (debug)
+        {
+            logger.setLevel(Level.ALL);
+        }
+        else
+        {
+            logger.setLevel(Level.OFF);
+        }
         logger.info("Hello world!");
         
         this.clientName = "Guest";
@@ -56,7 +63,7 @@ public class Client implements Runnable
         this.socket = new Socket(this.serverAddress, this.port);
         this.output = new DataOutputStream(socket.getOutputStream());
         this.input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-        inputKeyboard = new ClientInput(this);
+        inputKeyboard = new ClientInput(this, debug);
         threads = new ArrayList<Thread>();
 
         Thread newThread = new Thread(inputKeyboard);

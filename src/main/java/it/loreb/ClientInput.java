@@ -22,7 +22,7 @@ public class ClientInput implements Runnable
     private static SimpleFormatter  sf;
     private static File             logFile;
 
-    public ClientInput(Client parent) throws IOException
+    public ClientInput(Client parent, boolean debug) throws IOException
     {
         //initializing logger
         logger = Logger.getLogger(ClientInput.class.getName());
@@ -35,8 +35,15 @@ public class ClientInput implements Runnable
         sf = new SimpleFormatter();
         fh.setFormatter(sf);
         logger.addHandler(fh);
+        if (debug)
+        {
+            logger.setLevel(Level.ALL);
+        }
+        else
+        {
+            logger.setLevel(Level.OFF);
+        }
         logger.info("Hello world!");
-        fh.setLevel(Level.FINEST);
 
         this.parent = parent;
         scan = new Scanner(System.in);
@@ -65,7 +72,8 @@ public class ClientInput implements Runnable
             }
             catch (InvalidMessageException ime)
             {
-                logger.severe("UNABLE TO SEND MESSAGE: " + ime.getMessage());
+                logger.warning("UNABLE TO SEND MESSAGE: " + ime.getMessage());
+                System.out.println("Unable to send message. Reason: " + ime.getMessage());
             }
         }
     }
