@@ -18,9 +18,9 @@ public class Main
         {
             port = Integer.parseInt(args[1]);
         }
-        if (args.length > 1)
+        if (args.length > 2)
         {
-            if (args[1].equals("debug"))
+            if (args[2].equals("debug"))
             {
                 debug = true;
             }

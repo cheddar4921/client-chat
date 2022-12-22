@@ -168,7 +168,7 @@ public class Client implements Runnable
         }
         logger.info("Shutting down.");
         inputKeyboard.kill();
-        System.out.println("Press any key to terminate program.");
+        System.out.println("Enter any key to terminate program.");
     }
 
     /**
