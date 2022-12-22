@@ -13,29 +13,70 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
+/** The Client class is the main operator of the client-side. It manages sending and recieving messages from the server */
 public class Client implements Runnable
 {
-    private Socket              socket; //socket towards server
-    private int                 port; //server's port
-    private String              serverAddress; //server's address
-    private ArrayList<Thread>   threads; //reference to the threads the workers are in
-    private DataOutputStream    output; //output of the client
-    private BufferedReader      input; //input of the client
-    private String              pendingName; //name waiting in confirmation
-    private String              clientName; //name of the client
+    /**
+     *The socket reference of this class.
+     */
+    private Socket              socket; 
+    /**
+     *The server's port.
+     */
+    private int                 port;
+    /**
+     *The server's address
+     */
+    private String              serverAddress;
+    /**
+     *List of threads currently handled by the Client.
+     */
+    private ArrayList<Thread>   threads;
+    /**
+     *Output stream of client.
+     */
+    private DataOutputStream    output; 
+    /**
+     *Input stream of client
+     */
+    private BufferedReader      input;
+    /**
+     *The pending name waiting for confirmation by the server.
+     */
+    private String              pendingName;
+    /**
+     *The current approved client name. Will be "Guest" if none have been chosen yet.
+     */
+    private String              clientName;
+    /**
+     *The running state of the client
+     */
+    private boolean             running;
+    /**
+     *The user input from this client.
+     */
+    private ClientInput         inputKeyboard;
 
-    private boolean             running; //running state
-    private ClientInput         inputKeyboard; //keyboard scanner
-
-    //stuff for logging
+    //logging
+    /**
+     *Main logger class. Used to log operations and debug.
+     */
     private static Logger           logger;
+    /**
+     *File handler logger. Used to handle logging to file.
+     */
     private static FileHandler      fh;
+    /**
+     *Formatter to format logs.
+     */
     private static SimpleFormatter  sf;
+    /**
+     *File path of the logger.
+     */
     private static File             logFile;
 
     /**
-     * The Client class is the main operator of the client-side. It manages sending and recieving messages from the server.
+     * The main constructor of this class.
      * @param ip The IP of the server. Default is "localhost".
      * @param port The port of the server. This will be validated, if found to be an invalid value, then it will go to default. Default is 25575.
      * @param debug Whether to run the client is debug or not. 
@@ -119,6 +160,10 @@ public class Client implements Runnable
                 logger.severe("Exception in the stream. " + ioe.getMessage());
                 System.out.println("Getting disconnected from the server. Reason: Error in stream, server might have shut down.");
                 running = false;
+            }
+            catch (Exception e)
+            {
+                logger.severe("ERROR. Unknown exception: " + e.getMessage());
             }
         }
         logger.info("Shutting down.");

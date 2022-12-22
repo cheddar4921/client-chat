@@ -7,23 +7,48 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
+/**
+ * The physical input of the client. This manages keyboard control and sends in strings to the client to be verified.
+ */
 public class ClientInput implements Runnable
 {
-    private Scanner             scan; //keyboard scan reference
-    private boolean             running; //running state
-    private String              input; //input from user
+    /**
+     *The keyboard scanner.
+     */
+    private Scanner             scan;
+    /**
+     *The running state of the object.
+     */
+    private boolean             running; 
+    /**
+     *The string result of the user input.
+     */
+    private String              input;
+    /**
+     *Parent reference. Used to pass the result message.
+     */
+    private Client              parent;
 
-    private Client              parent; //parent reference
-
-    //stuff for logging
+    //logging
+    /**
+     *Main logger class. Used to log operations and debug.
+     */
     private static Logger           logger;
+    /**
+     *File handler logger. Used to handle logging to file.
+     */
     private static FileHandler      fh;
+    /**
+     *Formatter to format logs.
+     */
     private static SimpleFormatter  sf;
+    /**
+     *File path of the logger.
+     */
     private static File             logFile;
 
     /**
-     * The physical input of the client. This manages keyboard control and sends in strings to the client to be verified.
+     * The main constructor of this class.
      * @param parent The client reference.
      * @param debug Whether to run the client is debug or not. 
      * @throws IOException Thrown when an error occurs in the creation of a log file.
@@ -80,6 +105,10 @@ public class ClientInput implements Runnable
             {
                 logger.warning("UNABLE TO SEND MESSAGE: " + ime.getMessage());
                 System.out.println("Unable to send message. Reason: " + ime.getMessage());
+            }
+            catch (Exception e)
+            {
+                logger.severe("ERROR. Unknown exception: " + e.getMessage());
             }
         }
     }
